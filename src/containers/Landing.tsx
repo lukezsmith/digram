@@ -1,6 +1,5 @@
 import useEagerConnect from "../hooks/useEagerConnect";
 import UserWidget from "../components/UserWidget";
-import Navbar from "../components/Navbar";
 import Account from "../components/Account";
 
 const userWallets = [
@@ -25,7 +24,6 @@ const Home = () => {
 
       <main className="">
       <div className="2-xl:px-96 lg:px-40 py-4 bg-blue-100">
-        <Navbar />
         
         <Account triedToEagerConnect={triedToEagerConnect} />
         </div>
