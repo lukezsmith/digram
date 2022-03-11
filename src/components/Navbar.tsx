@@ -1,15 +1,12 @@
 import UserWidget from "../components/UserWidget";
 import { useWeb3React } from "@web3-react/core";
 
-
-
 const Navbar = () => {
   const { account, library } = useWeb3React();
   const isConnected = typeof account === "string" && !!library;
 
-
-
   return (
+    <div className="2-xl:px-96 lg:px-40 py-4 bg-blue-100">
       <nav className="flex flex-row justify-between items-center px-3 pt-4">
         <div className="flex flex-row items-center px-5 -mt-1">
           <h1 className="text-4xl logo font-sans-serif font-bold text-violet-600">DIGRAM</h1>
@@ -31,6 +28,7 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+    </div>
   );
 };
 export default Navbar;
