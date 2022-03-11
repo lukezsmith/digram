@@ -26,7 +26,7 @@
 // export default App;
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider, ExternalProvider, JsonRpcFetchFunc } from "@ethersproject/providers";
-import Home from "./containers/Home";
+import FeedPage from "./containers/FeedPage";
 import PropTypes from "prop-types";
 // import "../styles/globals.css";
 
@@ -44,8 +44,8 @@ type ComponentProps = {
 function MyApp() {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-      <Component {...pageProps} />
-      {/* <Home></Home> */}
+      {/* <Component {...pageProps} /> */}
+      {<FeedPage></FeedPage>}
     </Web3ReactProvider>
   );
 }

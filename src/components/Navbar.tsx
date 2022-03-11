@@ -12,7 +12,7 @@ const Navbar = () => {
   return (
       <nav className="flex flex-row justify-between items-center px-3 pt-4">
         <div className="flex flex-row items-center px-5 -mt-1">
-          <h1 className="text-xl logo font-sans-serif">ETHStakes</h1>
+          <h1 className="text-4xl logo font-sans-serif font-bold text-violet-600">DIGRAM</h1>
         </div>
         <div className="flex flex-1 flex-row flex-grow flex-nowrap justify-end">
           <div className="flex flex-row  items-center">
