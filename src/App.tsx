@@ -44,8 +44,8 @@ type ComponentProps = {
 function MyApp() {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-      {/* <Component {...pageProps} /> */}
-      <Home></Home>
+      <Component {...pageProps} />
+      {/* <Home></Home> */}
     </Web3ReactProvider>
   );
 }

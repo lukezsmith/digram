@@ -1,9 +1,7 @@
-import { useWeb3React } from "@web3-react/core";
-
-import UserWidget from "../components/UserWidget";
-import Account from "../components/Account";
-
 import useEagerConnect from "../hooks/useEagerConnect";
+import UserWidget from "../components/UserWidget";
+import Navbar from "../components/Navbar";
+import Account from "../components/Account";
 
 const userWallets = [
   "0x43f5bFCfF61DF4eeC3B13b40F06F4e46ED864aC4",
@@ -16,12 +14,7 @@ const userWallets = [
 ];
 
 const Home = () => {
-  const { account, library } = useWeb3React();
-
   const triedToEagerConnect = useEagerConnect();
-
-  const isConnected = typeof account === "string" && !!library;
-
   return (
     <div className="">
       <header>
@@ -31,37 +24,10 @@ const Home = () => {
       </header>
 
       <main className="">
-        <div className="2-xl:px-96 lg:px-40 py-4 bg-blue-100">
-          <nav className="flex flex-row justify-between items-center px-3 pt-4">
-            <div className="flex flex-row items-center px-5 -mt-1">
-              <h1 className="text-xl logo font-sans-serif">ETHStakes</h1>
-            </div>
-            <div className="flex flex-1 flex-row flex-grow flex-nowrap justify-end">
-              <div className="flex flex-row  items-center">
-                <a
-                  className="md:block"
-                  href="https://twitter.com/lukezsmith"
-                >
-                  <button className="flex items-center fill-current font-semibold justify-center transition-colors pointer-events-auto rounded-3xl text-lg mr-10">
-                    <img className=" w-8 md:w-10" src="/discord.png"></img>
-                  </button>
-                </a>
-                <a
-                  className=" md:block"
-                  href="https://twitter.com/lukezsmith"
-                >
-                  <button className="flex items-center fill-current font-semibold justify-center transition-colors pointer-events-auto rounded-3xl text-lg mr-10">
-                    <img className="w-8 md:w-10" src="/twitter.png"></img>
-                  </button>
-                </a>
-
-                {isConnected && (
-                  <UserWidget walletAddress={account}/>
-                )}
-              </div>
-            </div>
-          </nav>
-              <Account triedToEagerConnect={triedToEagerConnect} />
+      <div className="2-xl:px-96 lg:px-40 py-4 bg-blue-100">
+        <Navbar />
+        
+        <Account triedToEagerConnect={triedToEagerConnect} />
         </div>
         <div className="">
           <div className="text-center py-12 ">
