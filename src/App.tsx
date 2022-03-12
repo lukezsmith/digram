@@ -7,6 +7,7 @@ import {
 } from "@ethersproject/providers";
 import Landing from "./containers/Landing";
 import FeedPage from "./containers/FeedPage";
+import NewQuestion from "./containers/NewQuestion"
 import PropTypes from "prop-types";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
@@ -27,6 +28,7 @@ function MyApp() {
         <Routes>
           <Route path="/" element={<Landing/>} />
           <Route path="/feed" element={<FeedPage/>} />
+          <Route path="/question/new" element={<NewQuestion/>} />
         </Routes>
       </Router>
     </Web3ReactProvider>

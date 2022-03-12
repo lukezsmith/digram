@@ -1,6 +1,5 @@
 import useEagerConnect from "../hooks/useEagerConnect";
 import QuestionWidget from "../components/QuestionWidget";
-import Navbar from "../components/Navbar";
 
 const feedData = [
   `{
@@ -115,7 +114,6 @@ const FeedPage = () => {
 
       <main className="bg-violet-200">
       <div className="2-xl:px-96 lg:px-40 py-4">
-        <Navbar />
         </div>
         <div className="">
           <div className="text-center py-12 ">
