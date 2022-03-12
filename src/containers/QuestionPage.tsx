@@ -2,6 +2,7 @@ import useEagerConnect from "../hooks/useEagerConnect";
 import UserWidget from "../components/UserWidget";
 import Question from "../components/Question";
 import Answer from "../components/Answer";
+import TextWindow from "../components/TextWindow";
 
 const question = {
   id: 1,
@@ -77,6 +78,11 @@ const QuestionPage = () => {
                 </div>
                 )
               })}
+            </div>
+            <div>
+              <label className="block py-3 text-lg font-bold">New Answer</label>
+              <TextWindow exampleText='Enter a response'/>
+              <button className="block py-3">Submit</button>
             </div>
           </div>
         </div>

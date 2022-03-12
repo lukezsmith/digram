@@ -1,11 +1,17 @@
+import parse from 'html-react-parser';
+
+const questionDesc = '<p style="text-align:center;">This is a test for text.</p><code>def testFunc(test): return outcome</code><blockquote><p>blockquotettest</p></blockquote><p><a title="wasdasdasda" href="wdawdawdaw">wadawdawdawd</a></p><p>Header</p><h3>Test</h3>';
+
 const Question = () => {
   return (
-    <div className="grid grid-rows-4">
+    <div className="grid grid-rows-4 p-3 m-3">
       <div>
         <h1 className="text-3xl">
-          Functions are not valid as a React child. This may happen if you
-          return a Component instead of from render
+          This is a question.
         </h1>
+      </div>
+      <div>
+        { parse(questionDesc) }
       </div>
       <div className="grid grid-cols-2">
         <div>Asked 4 years, 1 month ago</div>
