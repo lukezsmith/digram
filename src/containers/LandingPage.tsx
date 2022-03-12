@@ -12,7 +12,7 @@ const userWallets = [
   "0xD3d9ad647976d9376A51082cfe58de7976d1f3fB",
 ];
 
-const Home = () => {
+const LandingPage = () => {
   const triedToEagerConnect = useEagerConnect();
   return (
     <div className="">
@@ -23,9 +23,8 @@ const Home = () => {
       </header>
 
       <main className="">
-      <div className="2-xl:px-96 lg:px-40 py-4 bg-blue-100">
-        
-        <Account triedToEagerConnect={triedToEagerConnect} />
+        <div className="2-xl:px-96 lg:px-40 py-4 bg-blue-100">
+          <Account triedToEagerConnect={triedToEagerConnect} />
         </div>
         <div className="">
           <div className="text-center py-12 ">
@@ -44,4 +43,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LandingPage;
