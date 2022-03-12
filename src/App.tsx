@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import LandingPage from "./containers/LandingPage";
 import Navbar from "./components/Navbar";
 import QuestionPage from "./containers/QuestionPage";
+import IPFSTestPage from "./containers/IPFSTestPage";
 
 function getLibrary(provider: ExternalProvider | JsonRpcFetchFunc) {
   return new Web3Provider(provider);
@@ -24,6 +25,8 @@ function MyApp() {
         <Routes>
           <Route path="/" element={<LandingPage/>} />
           <Route path="/questions/:id" element={<QuestionPage/>} />
+          <Route path="/test" element={<IPFSTestPage/>} />
+
         </Routes>
       </Router>
     </Web3ReactProvider>

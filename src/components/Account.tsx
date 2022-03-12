@@ -1,6 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
-import { NONAME } from "dns";
 import { useEffect, useState } from "react";
 
 import { injected } from "../connectors";
