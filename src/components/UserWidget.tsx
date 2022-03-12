@@ -31,7 +31,7 @@ const UserWidget = ({ walletAddress }: UserWidgetProps) => {
     const  ENSName = useENSName(walletAddress);
 
   return (
-    <div className=" p-2 rounded-full flex items-center bg-white m-4">
+    <div className=" p-2 rounded-full flex items-center bg-white">
       <div
         className={color}
       ></div>
