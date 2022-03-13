@@ -6,11 +6,13 @@
 //   JsonRpcFetchFunc,
 // } from "@ethersproject/providers";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
-import LandingPage from "./containers/LandingPage";
 import Navbar from "./components/Navbar";
+import LandingPage from "./containers/LandingPage";
+import FeedPage from "./containers/FeedPage";
+import NewQuestion from "./containers/NewQuestion"
 import QuestionPage from "./containers/QuestionPage";
 import IPFSTestPage from "./containers/IPFSTestPage";
+
 
 // const Moralis = require('moralis');
 
@@ -24,7 +26,10 @@ function MyApp() {
       <Router>
         <Navbar />
         <Routes>
+
           <Route path="/" element={<LandingPage/>} />
+          <Route path="/feed" element={<FeedPage/>} />
+          <Route path="/questions/new" element={<NewQuestion/>} />
           <Route path="/questions/:id" element={<QuestionPage/>} />
           <Route path="/test" element={<IPFSTestPage/>} />
 

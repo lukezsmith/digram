@@ -168,10 +168,12 @@ const Navbar = () => {
   //     }
   //   }, [active, error, stopOnboarding]);
   return (
-    <div className="2-xl:px-96 lg:px-40 py-4 bg-blue-100">
+    <div className="2-xl:px-96 lg:px-40 py-4 bg-violet-200">
       <nav className="flex flex-row justify-between items-center px-3 pt-4">
         <div className="flex flex-row items-center px-5 -mt-1">
+
           <h1 className="text-xl logo font-sans-serif">digram</h1>
+
         </div>
         <div className="flex flex-1 flex-row flex-grow flex-nowrap justify-end">
           <div className="flex flex-row  items-center">
