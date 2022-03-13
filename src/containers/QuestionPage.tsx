@@ -1,80 +1,166 @@
+import { useMoralis } from "react-moralis";
+import { Moralis } from "moralis";
 import Question from "../components/Question";
 import Answer from "../components/Answer";
-import TextWindow from "../components/TextWindow";
-
-// const question = {
-//   id: 1,
-//   question: "",
-//   description: "",
-//   date_asked: "",
-//   status: "active",
-//   ipfs_hash: "asadada",
-//   upvotes: 27,
-//   duration: "",
-//   bounty: 125
-// }
-
-const answers = [
-  {
-    id: "1",
-    question_id: "1",
-    answer: "I have been through this same issue, the new React-Router doesn't support the exact keyword. You can simply remove it from the <Route .../> and it will work just fine. Also instead of component you have to use element and pass the element tag into it.",
-    author: "0x43f5bFCfF61DF4eeC3B13b40F06F4e46ED864aC4",
-    ipfs_hash : "dhjfgvbuyjshvfh",
-    num_upvotes: 12,
-    is_top_answer: false
-  },
-  {
-    id: "2",
-    question_id: "1",
-    answer: "And maybe the problem is that the version of your react-router-dom and the types are not the same and give compatibility problems. This library has not been updated yet. The same thing happened to me with a project that I just started.To solve this problem, you can downgrade the version of your react-router-dom to v5 and work under that syntax, or wait for the update of the types and use the most recent version. Keep in mind that there are important changes in v6 and updating when you have a lot of code could be complicated.Likewise, the previous answers are correct, exact does not exist in the new v6 of react-router.",
-    author: "0xb8c2C29ee19D8307cb7255e1Cd9CbDE883A267d5",
-    ipfs_hash : "dhjfgvbuyjshvfh",
-    num_upvotes: 2,
-    is_top_answer: false
-  },
-  {
-    id: "3",
-    question_id: "1",
-    answer: "You can refer to this migration guide: https://reactrouter.com/docs/en/v6/upgrading/v5",
-    author: "0xa336A4091A8AA642E65eB887E78Cc22bCfF5AA95",
-    ipfs_hash : "dhjfgvbuyjshvfh",
-    num_upvotes: 0,
-    is_top_answer: false
-  },
-  {
-    id: "4",
-    question_id: "1",
-    answer: "I am trying to use react-router-dom inside my react app and also I am using typescript instead of javascript. The issue here is that I can't import Route inside my component and make it work. I already installed @types/react-router-dom but for some reason it's still not working as expected.",
-    author: "0x4B5922ABf25858d012d12bb1184e5d3d0B6D6BE4",
-    ipfs_hash : "dhjfgvbuyjshvfh",
-    num_upvotes: 1,
-    is_top_answer: false
-  },
-];
+import EditorWindow from "../components/EditorWindow";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import getCurrentDateTime from "../utils/Utils";
+import getSigningKeys from "../utils/IndexDB";
 
 const QuestionPage = () => {
+  const { user } = useMoralis();
+  // get questionid
+  let { id } = useParams();
+
+  const [isValidId, setIsValidId] = useState(false);
+  const [questionData, setQuestionData] = useState<any>();
+  const [answerData, setAnswerData] = useState([]);
+  const [answer, setAnswer] = useState("");
+
+  const checkQuestionId = async (id?: string) => {
+    const Question = Moralis.Object.extend("Questions");
+    const query = new Moralis.Query(Question);
+    query.equalTo("objectId", id);
+    const results = await query.find();
+    if (results.length != 0) {
+      setQuestionData(results[0].attributes);
+      setIsValidId(true);
+    }
+  };
+
+  const submitAnswer = async () => {
+    // get keys from indexedDb
+    const { metamaskSignature, authSignature, jwtPublicKey } =
+      await getSigningKeys();
+
+    const dateAnswered = getCurrentDateTime();
+
+    // build content json
+    let contentObject = {
+      answer: answer,
+      questionID: id,
+      dateAnswered: dateAnswered,
+    };
+
+    // add authorisation to content
+    var message =
+      "Log in using Moralis and authorise publishing on digram.xyz from this device using:\n" +
+      jwtPublicKey;
+    let authObject = {
+      contributor: user?.get("ethAddress"),
+      signingKey: jwtPublicKey,
+      signature: metamaskSignature,
+      signingKeySignature: authSignature,
+      signingKeyMessage: message,
+      algorithm: {
+        name: "ECDSA",
+        hash: "SHA-256",
+      },
+    };
+
+    const object = {
+      content: contentObject,
+      authorisation: authObject,
+    };
+
+    const file = new Moralis.File("file.json", {
+      base64: btoa(JSON.stringify(object)),
+    });
+    await file.saveIPFS();
+
+    const Answer = Moralis.Object.extend("Answers");
+    const _answer = new Answer();
+
+    _answer.set("answer", answer);
+
+    // need to get the question id - perhaps from route?
+    _answer.set("questionId", id);
+
+    _answer.set("dateAnswered", dateAnswered);
+    _answer.set("authorWalletAddress", user?.get("ethAddress"));
+
+    // perhaps we can compute this first before actually uploading it so we can add it now?
+    _answer.set("ipfsUrl", file._url);
+
+    _answer.set("numUpvotes", 0);
+    _answer.set("isBestAnswer", false);
+    _answer
+      .save()
+
+      .then(
+        (question: typeof Question) => {
+          // Execute any logic that should take place after the object is saved.
+          window.location.reload();
+        },
+        (error: { message: string }) => {
+          // Execute any logic that should take place if the save fails.
+          // error is a Moralis.Error with an error code and message.
+          alert(
+            "Failed to create new object, with error code: " + error.message
+          );
+        }
+      );
+  };
+
+  const getAnswers = async () => {
+    const Answer = Moralis.Object.extend("Answers");
+    const query = new Moralis.Query(Answer);
+    query.equalTo("questionId", id);
+    const results = await query.find();
+    var temp = [];
+    for (let i = 0; i < results.length; i++) {
+      const object = results[i];
+      temp.push(object.attributes);
+    }
+    setAnswerData(temp as any);
+  };
+
+  useEffect(() => {
+    if (!isValidId) {
+      checkQuestionId(id);
+    }
+    if (answerData.length == 0) {
+      getAnswers();
+    }
+  }, []);
+
+  if (!isValidId) {
+    return <div>Invalid question id.</div>;
+  }
+
+  console.log(answerData);
+
   return (
     <div className="">
       <main className="">
         <div className="">
           <div className="text-left py-12 2-xl:px-96 lg:px-40 ">
-            <Question/>
+            <Question data={questionData} />
             <div className="grid bg-gray-100 my-12 rounded-xl">
-              {answers.map((obj, i) => {
+              {answerData.map((obj, i) => {
                 return (
-                <div>
-                <Answer key={i} data={obj} />
-                <hr className="solid" />
-                </div>
-                )
+                  <div>
+                    <Answer key={i} data={obj} />
+                    <hr className="solid" />
+                  </div>
+                );
               })}
             </div>
-            <div>
-              <label className="block py-3 text-lg font-bold">New Answer</label>
-              <TextWindow exampleText='Enter a response'/>
-              <button className="block py-3">Submit</button>
-            </div>
+            {user ? (
+              <div>
+                <label className="block py-3 text-lg font-bold">
+                  New Answer
+                </label>
+                <EditorWindow
+                  submissionHandler={setAnswer}
+                  exampleText="Enter a response"
+                />
+                <button className="block py-3" onClick={submitAnswer}>
+                  Submit
+                </button>
+              </div>
+            ) : null}
           </div>
         </div>
       </main>

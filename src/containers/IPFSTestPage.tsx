@@ -1,4 +1,5 @@
 
+import {Moralis} from 'moralis';
 // const question = {
 //   id: 1,
 //   question: "",
@@ -15,7 +16,6 @@ const IPFSTestPage = () => {
 //   const triedToEagerConnect = useEagerConnect();
 
   const handleDBUpload = async() =>{
-
     // const tbl = await connect({ network: "testnet" });
 
     // const createRes = await tbl.create(
@@ -36,6 +36,18 @@ const IPFSTestPage = () => {
   }
   const handleDBRetrieval = async() =>{
 
+    const Category = Moralis.Object.extend("Categories");
+    const query = new Moralis.Query(Category);
+    // query.equalTo("categoryName", "Web3");
+    const results = await query.find();
+    alert("Successfully retrieved " + results.length + " categories.");
+    // // Do something with the returned Moralis.Object values
+    // for (let i = 0; i < results.length; i++) {
+    //   const object = results[i];
+    //   alert(object.id + ' - ' + object.get('ownerName'));
+    // }
+
+    
     // const tbl = await connect({ network: "testnet" });
     // console.log(tbl);
     // const tblName = "mytable_403";

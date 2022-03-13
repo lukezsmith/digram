@@ -2,26 +2,25 @@ import { Editor } from "@tinymce/tinymce-react";
 import { useState } from "react";
 import { useEffect } from "react";
 
-type textType = {
+type codeBlockProptypes = {
+    submissionHandler: Function;
     exampleText: string;
   };
 
-const TextWindow = ({ exampleText }: textType) => {
+const EditorWindow = ({ submissionHandler, exampleText }: codeBlockProptypes) => {
 
     const [value, setValue] = useState('' ?? '');
     useEffect(() => setValue('' ?? ''), ['']);
-
-    const log = () => {
-      alert(value);
-    }
 
     return(
       <Editor
         apiKey="wte0d2yf1t85oza86puswoi9z2hgavvdebwlb1e2t08r339a"
         initialValue={''}
         value={value}
-        onEditorChange={(newValue, editor) => setValue(newValue)}
-        onSubmit={log}
+        onEditorChange={(newValue, editor) => {
+          setValue(newValue);
+          submissionHandler(newValue);
+        }}
         init={{
           plugins: [
             "codesample",
@@ -39,4 +38,4 @@ const TextWindow = ({ exampleText }: textType) => {
     );
   }
 
-export default TextWindow;
+export default EditorWindow;

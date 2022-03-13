@@ -1,17 +1,19 @@
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { ChevronUpIcon } from "@heroicons/react/outline";
 import UserWidget from "../components/UserWidget";
+import parse from "html-react-parser";
 
 interface AnswerProps {
   key: number;
   data: {
-    id: string;
-    question_id: string;
+    questionId: string;
+    authorWalletAddress: string;
     answer: string;
-    author: string;
-    ipfs_hash: string;
-    num_upvotes: number;
-    is_top_answer: boolean;
+    ipfsHash: string;
+    numUpvotes: number;
+    isBestAnswer: boolean;
+    dateAnswered: string;
+
   };
 }
 
@@ -29,11 +31,11 @@ const Answer = ({ data }: AnswerProps) => {
       </div>
       <div className="grid grid-rows-3 col-start-2 col-end-12 my-4">
         <div>
-          <h1 className="">{data.answer}</h1>
+          <h1 className="">{parse(data.answer)}</h1>
         </div>
         <div>Answered 4 years, 1 month ago</div>
         <div className="max-w-fit">
-          <UserWidget walletAddress={data.author} />
+          <UserWidget nav={false}  walletAddress={data.authorWalletAddress} />
         </div>
       </div>
     </div>

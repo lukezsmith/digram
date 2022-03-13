@@ -25,7 +25,7 @@ const LandingPage = () => {
             <h1 className="text-3xl">Entrants</h1>
             <div className="grid grid-cols-2 lg:grid-cols-6 sm:grid-cols-3 bg-gray-100 2-xl:mx-96 lg:mx-40 sm:mx-8 my-12 rounded-xl">
               {userWallets.map((obj, i) => {
-                return <UserWidget key={i} walletAddress={obj} />;
+                return <UserWidget nav={false} key={i} walletAddress={obj} />;
               })}
             </div>
           </div>
