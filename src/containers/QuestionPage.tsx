@@ -1,19 +1,17 @@
-import useEagerConnect from "../hooks/useEagerConnect";
-import UserWidget from "../components/UserWidget";
 import Question from "../components/Question";
 import Answer from "../components/Answer";
 
-const question = {
-  id: 1,
-  question: "",
-  description: "",
-  date_asked: "",
-  status: "active",
-  ipfs_hash: "asadada",
-  upvotes: 27,
-  duration: "",
-  bounty: 125
-}
+// const question = {
+//   id: 1,
+//   question: "",
+//   description: "",
+//   date_asked: "",
+//   status: "active",
+//   ipfs_hash: "asadada",
+//   upvotes: 27,
+//   duration: "",
+//   bounty: 125
+// }
 
 const answers = [
   {
@@ -55,15 +53,8 @@ const answers = [
 ];
 
 const QuestionPage = () => {
-  const triedToEagerConnect = useEagerConnect();
   return (
     <div className="">
-      <header>
-        <title>ETHStakes</title>
-        <meta name="description" content="ETH Lottery dApp" />
-        <link rel="icon" href="/favicon.ico" />
-      </header>
-
       <main className="">
         <div className="">
           <div className="text-left py-12 2-xl:px-96 lg:px-40 ">

@@ -1,6 +1,6 @@
-import useEagerConnect from "../hooks/useEagerConnect";
+// import useEagerConnect from "../hooks/useEagerConnect";
 import UserWidget from "../components/UserWidget";
-import Account from "../components/Account";
+// import Account from "../components/Account";
 
 const userWallets = [
   "0x43f5bFCfF61DF4eeC3B13b40F06F4e46ED864aC4",
@@ -13,18 +13,12 @@ const userWallets = [
 ];
 
 const LandingPage = () => {
-  const triedToEagerConnect = useEagerConnect();
+  // const triedToEagerConnect = useEagerConnect();
   return (
     <div className="">
-      <header>
-        <title>ETHStakes</title>
-        <meta name="description" content="ETH Lottery dApp" />
-        <link rel="icon" href="/favicon.ico" />
-      </header>
-
       <main className="">
         <div className="2-xl:px-96 lg:px-40 py-4 bg-blue-100">
-          <Account triedToEagerConnect={triedToEagerConnect} />
+          {/* <Account triedToEagerConnect={triedToEagerConnect} /> */}
         </div>
         <div className="">
           <div className="text-center py-12 ">
