@@ -10,11 +10,11 @@ import {Moralis} from 'moralis';
 
 
 function MyApp() {
-  const serverUrl = "https://ifwxko6cf4uu.usemoralis.com:2053/server"
-  const appId = "O3MHJC7Kj1CK5srBKMlUoc7VgntHd1ksNzgnmTwc"
+  const serverUrl = "https://1ejqdl65pprv.usemoralis.com:2053/server"
+  const appId = "8j3F8lQ9omg9DRUTFXVzOvuvwEB9y44uY0YuKfCb"
   Moralis.start({ serverUrl, appId});
   return (
-    <MoralisProvider serverUrl="https://ifwxko6cf4uu.usemoralis.com:2053/server" appId="O3MHJC7Kj1CK5srBKMlUoc7VgntHd1ksNzgnmTwc">
+    <MoralisProvider serverUrl="https://1ejqdl65pprv.usemoralis.com:2053/server" appId="8j3F8lQ9omg9DRUTFXVzOvuvwEB9y44uY0YuKfCb">
       <Router>
         <Navbar />
         <Routes>

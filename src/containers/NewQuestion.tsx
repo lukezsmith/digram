@@ -7,7 +7,97 @@ import NotLoggedIn from "../components/NotLoggedIn";
 import getSigningKeys from "../utils/IndexDB";
 import { useNavigate } from "react-router-dom";
 
+const ethers = Moralis.web3Library
 
+const daiAddress = "0x3398F2e9c46870278BF3e1767d67a527fB82f03c";
+const daiAbi = [
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "poster",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "unlockDate",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Created",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "poster",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "unlockDate",
+        "type": "uint256"
+      }
+    ],
+    "name": "newBounty",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function",
+    "payable": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      }
+    ],
+    "name": "getWallets",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  }
+]
 
 type questionProps = {
   questionTitle: string;
@@ -18,10 +108,15 @@ type questionProps = {
 };
 
 const NewQuestion = () => {
-  const { user } = useMoralis();
+
+  const { authenticate, isAuthenticated, isAuthenticating, user, logout , web3} = useMoralis();
+  const signer = (web3 as any).getSigner();
+  const daiContract = new ethers.Contract(daiAddress, daiAbi, signer);
+
+  const temp = daiContract.newBounty('0xAD2995dCcc23C3Fb447Dc3b742BbEa5CAa2f8cF1', '0x85a5b519365c6124698fefc734d0b627068c41a6', 5000000);
+  console.log(temp.poster);
 
   let navigate = useNavigate();
-
 
   const submitQuestion = async ({
     questionTitle,

@@ -22,11 +22,12 @@ contract BountyFactory is Clones {
         masterContract = msg.sender;
     }
 
-    function newBounty(IERC20 token, address poster, uint256 unlockDate) public payable returns (bool) {
+    function newBounty(IERC20 token, address poster, uint256 bountyAmount, uint256 unlockDate) public payable returns (bool) {
         Bounty bounty = Bounty(createClone(masterContract));
         bounty.initialize(
             token,
             poster,
+            bountyAmount,
             unlockDate
         );
         wallets[poster].push(address(bounty));
