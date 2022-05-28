@@ -79,6 +79,7 @@ abstract contract Stake is ERC20, Ownable {
         uint256 index;
         address winner;
         // line for chainlink VRF to update index
+        index = 1;
         winner = voterAddresses[index];
         return winner;
     }

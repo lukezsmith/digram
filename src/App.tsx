@@ -13,6 +13,7 @@ function MyApp() {
   const serverUrl = "https://ifwxko6cf4uu.usemoralis.com:2053/server"
   const appId = "O3MHJC7Kj1CK5srBKMlUoc7VgntHd1ksNzgnmTwc"
   Moralis.start({ serverUrl, appId});
+
   return (
     <MoralisProvider serverUrl="https://ifwxko6cf4uu.usemoralis.com:2053/server" appId="O3MHJC7Kj1CK5srBKMlUoc7VgntHd1ksNzgnmTwc">
       <Router>
