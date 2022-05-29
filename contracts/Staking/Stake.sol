@@ -17,7 +17,7 @@ abstract contract Stake is ERC20, Ownable {
     mapping (address => Voter) public voters;
     
     address[] public voterAddresses;
-
+    
     IERC20 private _token;
     address private _poster;
     uint256 public _pool;
