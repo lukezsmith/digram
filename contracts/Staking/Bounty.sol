@@ -5,9 +5,9 @@ pragma solidity ^0.8.0;
 import "../utils/Ownable.sol";
 import "../token/ERC20.sol";
 
-abstract contract Bounty is ERC20 {
+contract Bounty {
 
-    struct bountyData {
+    struct BountyData {
         uint256 bountyAmount;
         uint256 unlockDate;
         bool bountyExists;
@@ -15,7 +15,7 @@ abstract contract Bounty is ERC20 {
         address recipient;
     }
 
-    mapping(uint256 => bountyData) bounties;
+    mapping(uint256 => BountyData) bounties;
     uint256[] public bountyIds;
 
     ERC20 private _token;
@@ -28,18 +28,19 @@ abstract contract Bounty is ERC20 {
     }
 
     function initialize(
-        ERC20 token_
+        ERC20 __token
     ) public {
+        _token = __token;
     }
 
-    function token() public view virtual returns (IERC20) {
+    function token() public view virtual returns (ERC20) {
         return _token;
     }
 
     function createBounty(uint256 bountyId, address _poster, uint256 _bountyAmount, uint256 _unlockDate) public virtual onlyOwner returns (bool) {
         require((_unlockDate > block.timestamp  + 1 days) && (_bountyAmount > 0) && (!bounties[bountyId].bountyExists));
         token().transferFrom(msg.sender, address(this), _bountyAmount);
-        bountyData storage newBounty = bounties[bountyId];
+        BountyData storage newBounty = bounties[bountyId];
         newBounty.bountyAmount  = _bountyAmount;
         newBounty.poster = _poster;
         newBounty.unlockDate = _unlockDate;
@@ -80,8 +81,8 @@ abstract contract Bounty is ERC20 {
         return true;
     }
 
-    function setDigramWallet(address wallet) public virtual onlyOwner returns (bool){
-        digramWallet = wallet;
+    function setDigramWallet(address account) public virtual onlyOwner returns (bool){
+        digramWallet = account;
         return true;
     }
 
