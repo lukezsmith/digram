@@ -1,10 +1,14 @@
-# Getting Started with Create React App
+# Digram
+<!-- ## Overview -->
+Digram is a dApp that aims to enhance web2 information-sharing approaches through the use of tokenised consensus mechanisms. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Digram uses a custom ERC20 token to provide incentives to answer community questions.
+In addition to incentivised answering, Digram features a quadratic staking protocol to improve answer quality through the use of gamified voting which again improves on web2 solutions, allowing users to be paid for providing answer feedback. 
 
-## Available Scripts
+Finally, Digram improves upon web2 alternatives by utilising decentralised data composable storage protocols through Ceramic and IPFS.
 
-In the project directory, you can run:
+<!-- ## Setup 
+
 
 ### `npm start`
 
@@ -22,25 +26,4 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 ### `npm run build`
 
 Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+It correctly bundles React in production mode and optimizes the build for the best performance. -->
