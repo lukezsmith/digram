@@ -2,17 +2,24 @@
 pragma solidity ^0.8.13;
 
 import "../src/Bounty.sol";
-import "../lib/forge-std/src/Test.sol";
-import "../lib/forge-std/src/console2.sol";
+import {console} from "forge-std/console.sol";
+import {stdStorage, StdStorage, Test, Vm} from "forge-std/Test.sol";
+import {DSTest} from "ds-test/test.sol";
+import {Utilities} from "./utils/Utilities.sol";
 
-contract BountyTest is Test {
+contract BountyTest is DSTest {
+    Vm internal immutable vm = Vm(HEVM_ADDRESS);
+
+    Utilities internal utils;
+    address payable[] internal users;
+
     Bounty public bountyContract;
 
-    address public owner;
-    address public addr1;
-    address public addr2;
     
     function setUp() public {
+        // create test users
+        utils = new Utilities();
+        users = utils.createUsers(5);
         // instantiate contract
         bountyContract = new Bounty();    
         
