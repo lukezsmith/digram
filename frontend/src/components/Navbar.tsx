@@ -1,4 +1,4 @@
-import UserWidget from "../components/UserWidget";
+import UserWidget from "./UserWidget";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis";
 import Dexie from "dexie";

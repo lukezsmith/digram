@@ -3,8 +3,7 @@
 pragma solidity ^0.8.0;
 
 //import VRF
-import "../token/ERC20.sol";
-// import "../utils/Ownable.sol";
+import {ERC20} from "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
 contract Stake {
 
@@ -12,7 +11,7 @@ contract Stake {
         uint256 poolAmount;
         bool poolExists;
         Voter[] poolVoters;
-        mapping (address => Voter) voters;
+        mapping (uint256 => Voter) voters;
         address[] voterAddresses;
     }
 
@@ -61,7 +60,7 @@ contract Stake {
         return denomination;
     }
 
-    function getPool(uint256 poolId) public view returns (uint256) {
+    function getPool(uint256 poolId) internal view returns (Pool storage) {
         return pools[poolId];
     }
 
@@ -72,12 +71,13 @@ contract Stake {
         return true;
     }
 
-    function isNewVoter(uint256 poolId, address account) public view returns (bool) {
-        // memory or storage here?
-        Pool memory pool = pools[poolId];
-        require(pool.poolExists);
-        return (pool.voterAddresses[pool.voters[account].index] != account);
-    }
+    // function isNewVoter(uint256 poolId, uint256 voterId) public view returns (bool) {
+    //     // memory or storage here?
+    //     Pool storage pool = pools[poolId];
+    //     require(pool.poolExists);
+    //     return (pool.voterAddresses[pool.voters[voterId].index]
+    //     // return (pool.voterAddresses[pool.voters[voterId].index] != voterId);
+    // }
 
     // TODO
     function addVoter(uint256 poolId, uint256 voterId) public returns (bool) {
@@ -97,27 +97,27 @@ contract Stake {
         return true;
     }
 
-    function getCost(uint256 poolId, address account) public view returns (uint256) {
+    function getCost(uint256 poolId, uint256 voterId) public view returns (uint256) {
         require(pools[poolId].poolExists);
         uint256 currentCost;
-        currentCost = (pools[poolId].voters[account].numberVotes) ** 2;
+        currentCost = (pools[poolId].voters[voterId].numberVotes) ** 2;
         return currentCost;
     }
 
     function addVote(uint256 poolId, uint256 voterId) public payable returns (bool) {
         // memory or storage here?
-        Pool memory pool = pools[poolId];
+        Pool storage pool = pools[poolId];
         require(pool.poolExists);
         pool.voters[voterId].numberVotes += 1;
         pool.voterAddresses.push(msg.sender);
-        uint256 cost = getCost(msg.sender);
+        uint256 cost = getCost(poolId, voterId);
         updatePool(poolId, cost);
         token().transferFrom(msg.sender, address(this), cost);
         return true;
     }
     
     // memory or storage here?
-    function pickWinner(Pool memory pool) internal view returns(address) {
+    function pickWinner(Pool storage pool) internal view returns(address) {
         uint256 index;
         address winner;
         // TODO
@@ -128,7 +128,7 @@ contract Stake {
 
     function allocatePool(uint256 poolId) private {
         // memory or storage here?
-        Pool memory pool = pools[poolId];
+        Pool storage pool = pools[poolId];
         require(pool.poolExists);
         address winner = pickWinner(pool);
         uint256 toTransfer = address(this).balance;

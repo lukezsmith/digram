@@ -1,5 +1,5 @@
 import parse from "html-react-parser";
-import UserWidget from "../components/UserWidget";
+import UserWidget from "./UserWidget";
 interface QuestionProps {
   data: {
     questionTitle: string;

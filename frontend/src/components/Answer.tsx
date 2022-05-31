@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from "@heroicons/react/outline";
 import { ChevronUpIcon } from "@heroicons/react/outline";
-import UserWidget from "../components/UserWidget";
+import UserWidget from "./UserWidget";
 import parse from "html-react-parser";
 
 interface AnswerProps {

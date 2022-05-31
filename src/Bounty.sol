@@ -2,8 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import "../utils/Ownable.sol";
-import "../token/ERC20.sol";
+// import "../utils/Ownable.sol";
+// import "../token/ERC20.sol";
+import {ERC20} from "../lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol";
 
 contract Bounty {
 
@@ -20,10 +21,10 @@ contract Bounty {
 
     ERC20 private _token;
 
-    address digramWallet = 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391;
+    address public digramWallet = 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391;
 
     modifier onlyOwner {
-        require(msg.sender == digramWallet);
+        require(msg.sender == 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391);
         _;
     }
 
