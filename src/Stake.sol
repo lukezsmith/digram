@@ -23,8 +23,6 @@ contract Stake {
         uint256 index;
     }
 
-
-
     uint256[] public poolIds;
     
     // address[] public voterAddresses;
@@ -34,7 +32,7 @@ contract Stake {
     uint256 public denomination;
     uint public maxEntries;
 
-    address digramWallet = 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391;
+    address public digramWallet = 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391;
 
     modifier onlyOwner {
         require(msg.sender == digramWallet);
