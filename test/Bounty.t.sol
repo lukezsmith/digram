@@ -13,6 +13,9 @@ contract BountyTest is DGRM, DSTest {
 
     Utilities internal utils;
     address payable[] internal users;
+    address payable alice;
+    address payable bob;
+    address payable digramWallet = payable(0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391);
 
     Bounty public bountyContract;
     
@@ -21,37 +24,53 @@ contract BountyTest is DGRM, DSTest {
         utils = new Utilities();
         users = utils.createUsers(5);
         // instantiate contract
-        bountyContract = new Bounty();    
-        
-        // // start prank 
-        // vm.startPrank(0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391);
+        bountyContract = new Bounty(this);
 
-        // // deal ETH (needs to be DGRM) to digramWallet
-        // vm.deal(0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391, 99999999999999999 ether);
-
-    }
-
-    function testDGRMTransfer() public {
-        address payable alice = users[0];
-        // labels alice's address in call traces as "Alice [<address>]"
+        // labels alice/bob address in call traces as "Alice [<address>]"
+        alice = users[0];
         vm.label(alice, "Alice");
-        console.log("alice's address", alice);
-        address payable bob = users[1];
+        bob = users[1];
         vm.label(bob, "Bob");
 
-        vm.prank(alice);
-        (bool sent, ) = bob.call{value: 10 ether}("");
-        assertTrue(sent);
-        assertGt(bob.balance, alice.balance);
+        // allocate DGRM to digramWallet
+        vm.deal(digramWallet, 100 ether);
+        _mint(digramWallet, 100);
+
+        // mint DGRM to first two users
+        _mint(alice, 100);
+        _mint(bob, 100);    
     }
+
+    // function testDGRMTransfer() public {
+    //     address payable alice = users[0];
+    //     // labels alice's address in call traces as "Alice [<address>]"
+    //     vm.label(alice, "Alice");
+    //     console.log("alice's address", alice);
+    //     address payable bob = users[1];
+    //     vm.label(bob, "Bob");
+
+    //     vm.prank(alice);
+    //     (bool sent, ) = bob.call{value: 10 ether}("");
+    //     assertTrue(sent);
+    //     assertGt(bob.balance, alice.balance);
+    // }
 
     function testBountyInit() public {
         // check we can interact with contract
         assertTrue(bountyContract.digramWallet() == 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391);
     }
     function testBountyCreation() public {
+        
+        // approve contract for transfer (not sure if this is supposed to happen here?????)
+        vm.startPrank(digramWallet);
+        this.approve(address(bountyContract), 1);
+
         // check for successful bounty creation 
-        bountyContract.createBounty(0, 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391, 1, 2906490866);
+        assertTrue(bountyContract.createBounty(0, digramWallet, 1, 2906490866));
+        assertEq(this.balanceOf(digramWallet), 99);
+        assertEq(bountyContract.getPoster(0), digramWallet);
+
+        vm.stopPrank();
     }
 
     function testFailBountyCreation() public {
@@ -64,6 +83,9 @@ contract BountyTest is DGRM, DSTest {
 
         // TODO
         // check for bounty creation failure due to timestamp being incorrect
+
+        // TODO
+        // check for bounty creation failure due to insufficient funds
 
     }
 

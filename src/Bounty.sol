@@ -26,9 +26,9 @@ contract Bounty {
         _;
     }
 
-    function initialize(
+    constructor (
         ERC20 __token
-    ) public {
+    ){
         _token = __token;
     }
 
