@@ -9,7 +9,7 @@ contract Bounty {
     struct BountyData {
         uint256 bountyAmount;
         uint256 unlockDate;
-        bool bountyExists;
+        bool bountyFulfilled;
         address poster;
         address recipient;
     }
@@ -22,7 +22,7 @@ contract Bounty {
     address public digramWallet = 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391;
 
     modifier onlyOwner {
-        require(msg.sender == 0x44BBa8F36Be0BB08e9680f046F109aA2b4aCf391);
+        require(msg.sender == digramWallet);
         _;
     }
 
@@ -32,55 +32,61 @@ contract Bounty {
         _token = __token;
     }
 
-    function token() public view virtual returns (ERC20) {
+    function token() public view returns (ERC20) {
         return _token;
     }
 
-    function createBounty(uint256 bountyId, address _poster, uint256 _bountyAmount, uint256 _unlockDate) public virtual onlyOwner returns (bool) {
-        require((_unlockDate > block.timestamp  + 1 days) && (_bountyAmount > 0) && (!bounties[bountyId].bountyExists));
+    function createBounty(uint256 bountyId, uint256 _bountyAmount, uint256 _unlockDate) public returns (bool) {
+        require((_unlockDate > block.timestamp  + 1 days) && (_bountyAmount > 0) && (bounties[bountyId].bountyAmount == 0));
+//        token()._transfer(_poster, address(this), _bountyAmount);
         token().transferFrom(msg.sender, address(this), _bountyAmount);
         BountyData storage newBounty = bounties[bountyId];
         newBounty.bountyAmount  = _bountyAmount;
-        newBounty.poster = _poster;
+        newBounty.poster = msg.sender;
         newBounty.unlockDate = _unlockDate;
-        newBounty.bountyExists = true;
+        newBounty.bountyFulfilled = false;
         return true;
     }
 
-    function getBountyAmount(uint256 bountyId) public view virtual returns (uint256) {
+    function getBountyAmount(uint256 bountyId) public view returns (uint256) {
         return bounties[bountyId].bountyAmount;
     }
 
-    function getPoster(uint256 bountyId) public view virtual returns (address) {
+    function getPoster(uint256 bountyId) public view returns (address) {
         return bounties[bountyId].poster;
     }
 
-    function getUnlockDate(uint256 bountyId) public view virtual returns (uint256) {
+    function getUnlockDate(uint256 bountyId) public view returns (uint256) {
         return bounties[bountyId].unlockDate;
     }
 
-    function getRecipient(uint256 bountyId) public view virtual returns (address)  {
+    function getRecipient(uint256 bountyId) public view returns (address) {
         return bounties[bountyId].recipient;
     }
 
-    function setRecipient(uint256 bountyId, address account) public virtual {
+    function setRecipient(uint256 bountyId, address account) public returns (bool) {
         require((msg.sender == digramWallet || msg.sender == bounties[bountyId].poster) && block.timestamp >= bounties[bountyId].unlockDate);
         // not sure this is needed after the above require
         // require(!bounties[bountyId].bountyExists);
-        bounties[bountyId].recipient = account; 
+        bounties[bountyId].recipient = account;
         reward(bountyId);
-    }
-
-    function reward(uint256 bountyId) internal virtual returns (bool){
-        uint256 amount = bounties[bountyId].bountyAmount;
-        uint256 posterAmount = amount * 10 / 100;
-        uint256 recipientAmount = amount * 90 / 100;
-        token().transferFrom(address(this), bounties[bountyId].poster, posterAmount);
-        token().transferFrom(address(this), bounties[bountyId].recipient, recipientAmount);
         return true;
     }
 
-    function setDigramWallet(address account) public virtual onlyOwner returns (bool){
+    function reward(uint256 bountyId) internal returns (bool) {
+        require(!bounties[bountyId].bountyFulfilled);
+        uint256 amount = bounties[bountyId].bountyAmount;
+        uint256 posterAmount = amount * 10 / 100;
+        uint256 recipientAmount = amount * 90 / 100;
+        token().transfer(bounties[bountyId].poster, posterAmount);
+        token().transfer(bounties[bountyId].recipient, recipientAmount);
+        //token().transferFrom(address(this), bounties[bountyId].poster, posterAmount);
+        //token().transferFrom(address(this), bounties[bountyId].recipient, recipientAmount);
+        bounties[bountyId].bountyFulfilled = true;
+        return true;
+    }
+
+    function setDigramWallet(address account) public onlyOwner returns (bool) {
         digramWallet = account;
         return true;
     }
