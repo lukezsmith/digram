@@ -1,4 +1,9 @@
 forge-std/=lib/forge-std/src/
 openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/
+<<<<<<< HEAD
 ds-test/=lib/ds-test/src/
 @solmate=lib/solmate/src/
+=======
+@solmate=lib/solmate/src/
+ds-test/=lib/ds-test/src/
+>>>>>>> 0a50a52530e439388069673d3f39989f265d8b63
