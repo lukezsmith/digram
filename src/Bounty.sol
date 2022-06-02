@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.0;
 
-import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
+import "@solmate/tokens/ERC20.sol";
+//import {ERC20} from "openzeppelin-contracts/token/ERC20/ERC20.sol";
 
 contract Bounty {
 
@@ -88,6 +89,11 @@ contract Bounty {
 
     function setDigramWallet(address account) public onlyOwner returns (bool) {
         digramWallet = account;
+        return true;
+    }
+
+    function withdraw(address to, uint256 amount) external onlyOwner returns (bool) {
+        token().transfer(to, amount);
         return true;
     }
 

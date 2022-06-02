@@ -45,14 +45,7 @@ contract BountyTest is DGRM, DSTest {
         _mint(bob, 100);
 
         vm.prank(alice);
-        //this.approve(digramWallet,0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
         this.approve(address(bountyContract),0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
-        //vm.stopPrank();
-
-        //vm.prank(digramWallet);
-        //this.approve(alice,0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
-        //this.approve(address(bountyContract),0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff);
-        //vm.stopPrank();
 
     }
 
@@ -173,7 +166,7 @@ contract BountyTest is DGRM, DSTest {
 
     function testFailRewardAllocation() public {
 
-        // check reward allocation after setRecipient by non-poster
+        // check failed reward allocation after setRecipient by non-poster or digram wallet
 
         vm.prank(alice);
         bountyContract.createBounty(7, 10, 2906490866);
@@ -250,4 +243,61 @@ contract BountyTest is DGRM, DSTest {
         assertTrue(bountyContract.setDigramWallet(bob));
 
     }
+
+    function testWithdrawalDigram() public {
+        
+        // check that DGRM can be withdrawn to the digram wallet
+
+        vm.prank(alice);
+        this.transfer(address(bountyContract), 10);
+
+        assertEq(this.balanceOf(alice), 90);
+
+        vm.prank(digramWallet);
+        bountyContract.withdraw(digramWallet, 10);
+
+        assertEq(this.balanceOf(digramWallet), 110);
+
+    }
+
+    function testWithdrawalOther() public {
+        
+        // check that DGRM can be withdrawn to another wallet
+
+        vm.prank(alice);
+        this.transfer(address(bountyContract), 10);
+
+        assertEq(this.balanceOf(alice), 90);
+
+        vm.prank(digramWallet);
+        bountyContract.withdraw(alice, 10);
+
+        assertEq(this.balanceOf(alice), 100);
+
+    }
+
+    function testFailWithdrawal() public {
+
+        // check withdrawal failure after being called by non owner
+
+        vm.prank(alice);
+        this.transfer(address(bountyContract), 10);
+
+        vm.prank(bob);
+        assertTrue(bountyContract.withdraw(alice, 10));
+
+    }
+
+    function testFailWithdrawalFunds() public {
+
+        // check withdrawal failure due to insufficient funds
+
+        vm.prank(alice);
+        this.transfer(address(bountyContract), 10);
+
+        vm.prank(digramWallet);
+        assertTrue(bountyContract.withdraw(alice, 20));
+
+    }
+
 }
